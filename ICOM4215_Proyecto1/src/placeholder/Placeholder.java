@@ -10,7 +10,9 @@ public class Placeholder {
 		
 		//Debido a que git no reconoce directorios vacios, estoy a–adiendo esta clase "Placeholder"
 		//dentro de un paquete "placeholder" para que puedan accesar el folder "src".
-
+		
+		//if(0)
+		//	System.out.println("test");
 	}
 
 }

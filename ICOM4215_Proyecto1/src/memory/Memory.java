@@ -32,9 +32,18 @@ public class Memory {
 		throw new NoFreeMemoryException();
 	}
 	
-	public String getFromMemory(String hex_value){
+	public void addToMemory(String hex_addr, String hex_value) throws NoFreeMemoryException
+	{
+		int addr = Integer.parseInt(hex_addr, 16);
+		mem_array[addr]=hex_value.substring(0,2);
+		mem_array[addr+1]=hex_value.substring(2,4);
+	}
+	
+	public String getFromMemory(String hex_addr){
 		//TODO: Check how much is going to be retrieved from memory at a given time.
-		return null;
+		//Assuming 1 byte for now.
+		int addr = Integer.parseInt(hex_addr, 16);
+		return mem_array[addr];
 	}
 	
 }
