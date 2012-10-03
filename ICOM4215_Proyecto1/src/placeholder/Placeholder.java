@@ -1,4 +1,5 @@
 package placeholder;
+import cpu.CPU;
 
 public class Placeholder {
 
@@ -13,6 +14,7 @@ public class Placeholder {
 		
 		//if(0)
 		//	System.out.println("test");
+		
 	}
 
 }
