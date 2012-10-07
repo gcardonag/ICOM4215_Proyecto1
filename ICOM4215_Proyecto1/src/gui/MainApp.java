@@ -66,9 +66,9 @@ public class MainApp {
 		lblAcc.setBounds(10, 83, 30, 20);
 		frmHghSrcSimulator.getContentPane().add(lblAcc);
 		
-		JButton btnNewButton = new JButton("RUN");
-		btnNewButton.setBounds(232, 26, 80, 31);
-		frmHghSrcSimulator.getContentPane().add(btnNewButton);
+		JButton btnRun = new JButton("RUN");
+		btnRun.setBounds(232, 26, 80, 31);
+		frmHghSrcSimulator.getContentPane().add(btnRun);
 		
 		JButton btnStep = new JButton("STEP");
 		btnStep.addActionListener(new ActionListener() {
@@ -104,32 +104,68 @@ public class MainApp {
 		tA_R0.setBounds(50, 188, 80, 20);
 		frmHghSrcSimulator.getContentPane().add(tA_R0);
 		
-		JLabel lblR_1 = new JLabel("R1");
-		lblR_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblR_1.setBounds(10, 221, 30, 20);
-		frmHghSrcSimulator.getContentPane().add(lblR_1);
-		
 		JTextArea tA_R1 = new JTextArea();
 		tA_R1.setBounds(50, 220, 80, 20);
 		frmHghSrcSimulator.getContentPane().add(tA_R1);
+		
+		JTextArea tA_R2 = new JTextArea();
+		tA_R2.setBounds(50, 252, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_R2);
 		
 		JTextArea tA_R3 = new JTextArea();
 		tA_R3.setBounds(50, 284, 80, 20);
 		frmHghSrcSimulator.getContentPane().add(tA_R3);
 		
-		JLabel lblR_3 = new JLabel("R3");
-		lblR_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblR_3.setBounds(10, 285, 30, 20);
-		frmHghSrcSimulator.getContentPane().add(lblR_3);
+		JTextArea tA_R4 = new JTextArea();
+		tA_R4.setBounds(50, 315, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_R4);
+		
+		JTextArea tA_R5 = new JTextArea();
+		tA_R5.setBounds(50, 347, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_R5);
+		
+		JTextArea tA_R6 = new JTextArea();
+		tA_R6.setBounds(50, 379, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_R6);
+		
+		JTextArea tA_R7 = new JTextArea();
+		tA_R7.setBounds(50, 411, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_R7);
+		
+		JTextArea tA_SR = new JTextArea();
+		tA_SR.setBounds(50, 114, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_SR);
+		
+		JTextArea tA_VB = new JTextArea();
+		tA_VB.setBounds(173, 114, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_VB);
+		
+		JTextArea tA_Keyboard = new JTextArea();
+		tA_Keyboard.setBounds(173, 164, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_Keyboard);
+		
+		JTextArea tA_Display = new JTextArea();
+		tA_Display.setBounds(173, 214, 80, 20);
+		frmHghSrcSimulator.getContentPane().add(tA_Display);
+		
+		JTextArea tA_memory = new JTextArea();
+		tA_memory.setBounds(296, 114, 90, 318);
+		frmHghSrcSimulator.getContentPane().add(tA_memory);
+		
+		JLabel lblR_1 = new JLabel("R1");
+		lblR_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblR_1.setBounds(10, 221, 30, 20);
+		frmHghSrcSimulator.getContentPane().add(lblR_1);
 		
 		JLabel lblR_2 = new JLabel("R2");
 		lblR_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblR_2.setBounds(10, 253, 30, 20);
 		frmHghSrcSimulator.getContentPane().add(lblR_2);
 		
-		JTextArea tA_R2 = new JTextArea();
-		tA_R2.setBounds(50, 252, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_R2);
+		JLabel lblR_3 = new JLabel("R3");
+		lblR_3.setHorizontalAlignment(SwingConstants.CENTER);
+		lblR_3.setBounds(10, 285, 30, 20);
+		frmHghSrcSimulator.getContentPane().add(lblR_3);
 		
 		JLabel lblR_4 = new JLabel("R4");
 		lblR_4.setHorizontalAlignment(SwingConstants.CENTER);
@@ -151,34 +187,10 @@ public class MainApp {
 		lblR_7.setBounds(10, 412, 30, 20);
 		frmHghSrcSimulator.getContentPane().add(lblR_7);
 		
-		JTextArea tA_R7 = new JTextArea();
-		tA_R7.setBounds(50, 411, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_R7);
-		
-		JTextArea tA_R6 = new JTextArea();
-		tA_R6.setBounds(50, 379, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_R6);
-		
-		JTextArea tA_R5 = new JTextArea();
-		tA_R5.setBounds(50, 347, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_R5);
-		
-		JTextArea tA_R4 = new JTextArea();
-		tA_R4.setBounds(50, 315, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_R4);
-		
-		JTextArea tA_SR = new JTextArea();
-		tA_SR.setBounds(50, 114, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_SR);
-		
 		JLabel lblSr = new JLabel("SR");
 		lblSr.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSr.setBounds(10, 115, 30, 20);
 		frmHghSrcSimulator.getContentPane().add(lblSr);
-		
-		JTextArea textArea_12 = new JTextArea();
-		textArea_12.setBounds(296, 114, 90, 318);
-		frmHghSrcSimulator.getContentPane().add(textArea_12);
 		
 		JScrollBar scrollBar = new JScrollBar();
 		scrollBar.setBounds(386, 114, 16, 318);
@@ -194,22 +206,10 @@ public class MainApp {
 		lblVectorBuffer.setBounds(173, 89, 80, 20);
 		frmHghSrcSimulator.getContentPane().add(lblVectorBuffer);
 		
-		JTextArea tA_VB = new JTextArea();
-		tA_VB.setBounds(173, 114, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_VB);
-		
-		JTextArea tA_Keyboard = new JTextArea();
-		tA_Keyboard.setBounds(173, 164, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_Keyboard);
-		
 		JLabel lblKeyboard = new JLabel("Keyboard");
 		lblKeyboard.setHorizontalAlignment(SwingConstants.CENTER);
 		lblKeyboard.setBounds(173, 139, 80, 20);
 		frmHghSrcSimulator.getContentPane().add(lblKeyboard);
-		
-		JTextArea tA_Display = new JTextArea();
-		tA_Display.setBounds(173, 214, 80, 20);
-		frmHghSrcSimulator.getContentPane().add(tA_Display);
 		
 		JLabel lblDisplay = new JLabel("Display");
 		lblDisplay.setHorizontalAlignment(SwingConstants.CENTER);
