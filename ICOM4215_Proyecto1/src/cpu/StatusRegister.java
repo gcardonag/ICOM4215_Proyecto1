@@ -2,15 +2,20 @@ package cpu;
 
 public class StatusRegister {
 
-	public int overflow;
-	public int carry;
-	public int negative;
-	public int zero;
+	public String overflow;
+	public String carry;
+	public String negative;
+	public String zero;
 	
 	public StatusRegister(){
-		overflow = 0;
-		carry = 0;
-		negative = 0;
-		zero = 0;
+		overflow = "0";
+		carry = "0";
+		negative = "0";
+		zero = "0";
+	}
+	
+	public String getSR()
+	{
+		return overflow + negative + carry + zero;
 	}
 }
