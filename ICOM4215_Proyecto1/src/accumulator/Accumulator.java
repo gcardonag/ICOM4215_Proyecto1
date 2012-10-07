@@ -118,4 +118,116 @@ public class Accumulator {
 			if(!result_MSB.equals(acc_MSB))
 				CPU.SR.overflow = "1";
 	}
+	
+	/**
+	 * Gets the value stored in a register, calculates its 2's complement
+	 * and adds it to the accumulator. 
+	 * @param reg_value The value stored in the register
+	 */
+	public void acc_sub (String reg_value) {
+		
+		// Calculate the two's complement of the number
+		String temp = "";
+		boolean oneFound = false;
+		for (int i = reg_value.length(); i >= 0; i++) {
+			if (!oneFound) {
+				if (reg_value.charAt(i) == '0') {
+					temp = "0" + temp;
+				}
+				if (reg_value.charAt(i) == '1') {
+					temp = "1" + temp;
+					oneFound = true;
+				}
+			}
+			else {
+				if (reg_value.charAt(i) == '0') {
+					temp = "1" + temp;
+				}
+				else if (reg_value.charAt(i) == '1') {
+					temp = "0" + temp;
+				}
+			}
+			
+		}
+	
+		// Now add bit-wise the number in temp, which is the two's complement
+		// of the value of the register, to the accumulator
+		acc_addc (temp);
+		
+	}
+	
+	/**
+	 * Calculates the two's complement of the value of the accumulator
+	 */
+	public void acc_neg () {
+		String temp = "";
+		boolean oneFound = false;
+		for (int i = acc_value.length(); i >= 0; i++) {
+			if (!oneFound) {
+				if (acc_value.charAt(i) == '0') {
+					temp = "0" + temp;
+				}
+				if (acc_value.charAt(i) == '1') {
+					temp = "1" + temp;
+					oneFound = true;
+				}
+			}
+			else {
+				if (acc_value.charAt(i) == '0') {
+					temp = "1" + temp;
+				}
+				else if (acc_value.charAt(i) == '1') {
+					temp = "0" + temp;
+				}
+			}
+			
+		}
+		acc_value = temp;
+	}
+	
+	/**
+	 * Performs a logical bit-wise NOT operation on the accumulator
+	 */
+	public void acc_not () {
+		String temp = "";
+		for (int i = 0; i < acc_value.length(); i++) {
+			if (acc_value.charAt(i) == '0') {
+				temp = "1" + temp;
+			}
+			else if (acc_value.charAt(i) == '1') {
+				temp = "0" + temp;
+			}
+		}
+		acc_value = temp;
+	}
+	
+	/**
+	 * Rotate the bits of the value of the accumulator one at a time to the left
+	 * using the carry
+	 */
+	public void acc_rlc () {
+		char msb = acc_value.charAt(0);
+		acc_value = acc_value.substring(1) + CPU.SR.carry;
+		CPU.SR.carry = Character.toString(msb);
+		
+	}
+	
+	/**
+	 * Rotates the bits of the value of the accumulator one at a time 
+	 * to the right using the carry
+	 */
+	public void acc_rrc () {
+		char lsb = acc_value.charAt(7);
+		acc_value = acc_value.substring(0, 6);
+		acc_value = CPU.SR.carry + acc_value;
+		CPU.SR.carry = Character.toString(lsb);
+	}
+	
+	/**
+	 * Receives a string that contains a value to put in the accumulator
+	 * @param reg_value
+	 */
+	public void acc_lda (String reg_value) {
+		acc_value = reg_value;
+	}
 }
