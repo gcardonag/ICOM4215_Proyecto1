@@ -86,7 +86,7 @@ public class MainApp implements ActionListener, KeyListener {
 		cpu = new CPU(scanner);
 
 		mainFrame = new JFrame();
-		mainFrame.setTitle("HGH SRC Simulator");
+		mainFrame.setTitle("HGH SRC 5.0 Simulator");
 		mainFrame.setBounds(100, 100, 435, 480);
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
@@ -298,6 +298,7 @@ public class MainApp implements ActionListener, KeyListener {
 		}
 		else{
 			cpu.step();
+			update();
 		}
 
 	}
@@ -342,12 +343,8 @@ public class MainApp implements ActionListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		System.out.println("---");
-		System.out.println("Char " + e.getKeyChar());
-		System.out.println("Key Code " + e.getKeyCode());
-		System.out.println("ID " + e.getID());
-		System.out.println("ASCII " + (int) e.getKeyChar());
-
+		cpu.store_input_key(e.getKeyChar());
+		update();
 	}
 
 }
