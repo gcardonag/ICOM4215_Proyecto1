@@ -81,9 +81,12 @@ public class CPU {
 	
 	public void step()
 	{
+		String PC_hex = Integer.toHexString(Integer.parseInt(PC, 2));
 		String PC1 = Integer.toHexString(Integer.parseInt(PC, 2)+1);
-		String PC_next = Integer.toHexString(Integer.parseInt(PC, 2)+2);
-		String hex_value = mem.getFromMemory(PC) + mem.getFromMemory(PC1);
+		String PC_next = String.format("%8s", Integer.toBinaryString(Integer.parseInt(PC, 2)+2)).replace(" ", "0");
+		System.out.println(PC);
+		System.out.println(PC1);
+		String hex_value = mem.getFromMemory(PC_hex) + mem.getFromMemory(PC1);
 		PC = PC_next;
 		String bin_value = Integer.toBinaryString(Integer.parseInt(hex_value, 16));
 		int opcode = Integer.parseInt(bin_value.substring(0, 5), 2);
