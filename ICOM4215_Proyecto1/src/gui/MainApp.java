@@ -326,7 +326,8 @@ public class MainApp implements ActionListener, KeyListener {
 	public void mem_update(){
 		String[] arr = cpu.CPU.mem.mem_array;
 		tA_memory.setText("");
-		for (int i=0; 1 < arr.length; i= i+2){
+		for (int i=0; 1 < arr.length; i = i+2){
+			System.out.println(Integer.toHexString(i) + ": " + arr[i+1]+arr[i] +"\n");
 			tA_memory.append(Integer.toHexString(i) + ": " + arr[i+1]+arr[i] +"\n");
 		}
 
