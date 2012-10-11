@@ -291,10 +291,8 @@ public class MainApp implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if("RUN".equals(e.getActionCommand())){
-			while(scanner.hasNextLine()){
-				System.out.println(scanner.next());
-				mainFrame.repaint();
-			}
+			cpu.run();
+			update();
 		}
 		else{
 			cpu.step();
