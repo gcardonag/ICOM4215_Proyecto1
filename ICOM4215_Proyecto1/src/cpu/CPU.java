@@ -57,6 +57,7 @@ public class CPU {
 	private String getRegisterValue(String register_num_bin)
 	{
 		int register_num = Integer.parseInt(register_num_bin, 2);
+		System.out.println(register_num);
 		switch(register_num)
 		{
 			case(0):
@@ -132,10 +133,10 @@ public class CPU {
 				acc.acc_rrc();
 				break;	
 			case(10):
-				acc.acc_lda_rf(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_lda_rf(bin_value.substring(5,8));
 				break;
 			case(11):
-				acc.acc_sta_rf(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_sta_rf(bin_value.substring(5,8));
 				break;
 			case(12):
 				acc.acc_lda_addr(hex_value.substring(2,4));

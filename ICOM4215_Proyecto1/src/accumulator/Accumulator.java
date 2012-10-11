@@ -80,10 +80,10 @@ public class Accumulator {
 	
 	public void acc_addc(String reg_value){
 		String result = "";
-		for(int i=8-1; i>0; i--)
+		for(int i=8; i>0; i--)
 		{
-			String acc_bit = acc_value.substring(i,i+1);
-			String reg_bit = reg_value.substring(i,i+1);
+			String acc_bit = acc_value.substring(i-1,i);
+			String reg_bit = reg_value.substring(i-1,i);
 			//Checking the amount of bits set to 1.
 			int bits_1 = 0;
 			if(acc_bit.equals("1"))
@@ -92,6 +92,9 @@ public class Accumulator {
 				bits_1++;
 			if(CPU.SR.carry.equals("1"))
 				bits_1++;
+			//System.out.println(acc_value+"L");
+			//System.out.println(reg_value+"L");
+			//System.out.println(bits_1 + "L");
 			
 			//If 3 bits set to 1
 			if(bits_1 == 3)
@@ -100,18 +103,26 @@ public class Accumulator {
 				CPU.SR.carry = "1";
 			}
 			//If bits set to 1 is even amount
-			else if(bits_1 % 2 == 0)
+			else if(bits_1 == 2)
 			{
 				result = "0" + result;
 				CPU.SR.carry = "1";
 			}
 			//If bits set to 1 is 1. (Only other possible case)
-			else
+			else if(bits_1 == 1)
 			{
 				result = "1" + result;
 				CPU.SR.carry = "0";
 			}
+			else
+			{
+				result = "0" + result;
+				CPU.SR.carry = "0";
+			}
 		}
+		
+		acc_value = result;
+		
 		//Verify whether overflow bit should be toggled.
 		//Get MSBs for each value added.
 		String acc_MSB = acc_value.substring(0,1);
