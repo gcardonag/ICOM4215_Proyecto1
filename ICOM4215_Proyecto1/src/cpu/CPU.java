@@ -168,7 +168,7 @@ public class CPU {
 	}
 	
 	public void store_input_key(int ascii_value){
-		String hex_value = Integer.toHexString(ascii_value);
+		String hex_value = Integer.toHexString(ascii_value).toUpperCase();
 		while(hex_value.length() < 4)
 			hex_value = "0"+hex_value;
 		mem.addToMemory("FA", hex_value.substring(0,2));
