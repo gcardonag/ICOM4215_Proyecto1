@@ -20,7 +20,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JPanel;
 
 import cpu.CPU;
-import java.awt.Font;
 
 public class MainApp implements ActionListener, KeyListener {
 
@@ -28,6 +27,7 @@ public class MainApp implements ActionListener, KeyListener {
 	static private Scanner scanner;
 
 	private JFrame mainFrame;
+	private JPanel panel;
 	private JTextArea tA_R3;
 	private JTextArea tA_R2;
 	private JTextArea tA_R6;
@@ -92,7 +92,7 @@ public class MainApp implements ActionListener, KeyListener {
 		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainFrame.getContentPane().setLayout(null);
 
-		JPanel panel = new JPanel();
+		panel = new JPanel();
 		panel.setBounds(0, 0, 427, 453);
 		mainFrame.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -273,12 +273,14 @@ public class MainApp implements ActionListener, KeyListener {
 		b_STEP.setToolTipText("Run one step of the program.");
 		b_STEP.setActionCommand("STEP");
 		b_STEP.setBounds(348, 31, 69, 39);
+		b_STEP.setFocusable(true);
 		panel.add(b_STEP);
 
 		JButton b_RUN = new JButton("RUN");
 		b_RUN.setToolTipText("Run the remainder of the program.");
 		b_RUN.setActionCommand("RUN");
 		b_RUN.setBounds(251, 31, 69, 39);
+		b_RUN.setFocusable(true);
 		panel.add(b_RUN);
 		
 		panel.addKeyListener(this);
@@ -294,10 +296,12 @@ public class MainApp implements ActionListener, KeyListener {
 		if("RUN".equals(e.getActionCommand())){
 			cpu.run();
 			update();
+			panel.requestFocusInWindow();
 		}
 		else{
 			cpu.step();
 			update();
+			panel.requestFocusInWindow();
 		}
 
 	}
