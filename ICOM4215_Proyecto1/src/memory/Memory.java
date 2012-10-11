@@ -3,7 +3,7 @@ package memory;
 import java.util.Random;
 
 public class Memory {
-	private static final int MEM_SIZE = 255;
+	private static final int MEM_SIZE = 256;
 	
 	public String[] mem_array = new String[MEM_SIZE];
 	//private boolean[] mem_usage = new boolean[MEM_SIZE];
@@ -12,7 +12,6 @@ public class Memory {
 		Random rand = new Random(System.currentTimeMillis());
 		for(int i=0; i<MEM_SIZE; i++){
 			mem_array[i] = String.format("%02X", rand.nextInt(255));
-			System.out.println(mem_array[i]);
 		}
 	}
 	

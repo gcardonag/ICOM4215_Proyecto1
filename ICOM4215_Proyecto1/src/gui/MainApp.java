@@ -43,6 +43,7 @@ public class MainApp implements ActionListener, KeyListener {
 	private JTextArea tA_Display;
 	private JTextArea tA_R0;
 	private JTextArea tA_IR;
+	private CPU cpu;
 
 	/**
 	 * Launch the application.
@@ -82,7 +83,7 @@ public class MainApp implements ActionListener, KeyListener {
 	 */
 	private void initialize() {
 
-		CPU cpu = new CPU(scanner);
+		cpu = new CPU(scanner);
 
 		mainFrame = new JFrame();
 		mainFrame.setTitle("HGH SRC Simulator");
@@ -182,18 +183,6 @@ public class MainApp implements ActionListener, KeyListener {
 		label_16.setBounds(166, 261, 80, 20);
 		panel.add(label_16);
 
-		JButton b_STEP = new JButton("STEP");
-		b_STEP.setToolTipText("Run one step of the program.");
-		b_STEP.setActionCommand("STEP");
-		b_STEP.setBounds(348, 31, 69, 39);
-		panel.add(b_STEP);
-
-		JButton b_RUN = new JButton("RUN");
-		b_RUN.setToolTipText("Run the remainder of the program.");
-		b_RUN.setActionCommand("RUN");
-		b_RUN.setBounds(251, 31, 69, 39);
-		panel.add(b_RUN);
-
 		tA_IR = new JTextArea();
 		tA_IR.setEditable(false);
 		tA_IR.setBounds(44, 20, 146, 20);
@@ -279,6 +268,18 @@ public class MainApp implements ActionListener, KeyListener {
 		tA_memory.setEditable(false);
 		scrollPane.setViewportView(tA_memory);
 
+		JButton b_STEP = new JButton("STEP");
+		b_STEP.setToolTipText("Run one step of the program.");
+		b_STEP.setActionCommand("STEP");
+		b_STEP.setBounds(348, 31, 69, 39);
+		panel.add(b_STEP);
+
+		JButton b_RUN = new JButton("RUN");
+		b_RUN.setToolTipText("Run the remainder of the program.");
+		b_RUN.setActionCommand("RUN");
+		b_RUN.setBounds(251, 31, 69, 39);
+		panel.add(b_RUN);
+		
 		panel.addKeyListener(this);
 		b_STEP.addActionListener(this);
 		b_RUN.addActionListener(this);
@@ -296,39 +297,34 @@ public class MainApp implements ActionListener, KeyListener {
 			}
 		}
 		else{
-			if(scanner.hasNextLine()){
-				String temp = scanner.next();
-				tA_IR.setText(temp);
-				System.out.println(temp);
-			}
+			cpu.step();
 		}
 
 	}
 
 	public void update(){
-		tA_IR.setText(cpu.CPU.IR);
-		tA_PC.setText(cpu.CPU.PC);
-		tA_Acc.setText(cpu.CPU.acc.acc_value);
-		tA_SR.setText(cpu.CPU.SR.getSR());
-		tA_R0.setText(cpu.CPU.R0);
-		tA_R1.setText(cpu.CPU.R1);
-		tA_R2.setText(cpu.CPU.R2);
-		tA_R3.setText(cpu.CPU.R3);
-		tA_R4.setText(cpu.CPU.R4);
-		tA_R5.setText(cpu.CPU.R5);
-		tA_R6.setText(cpu.CPU.R6);
-		tA_R7.setText(cpu.CPU.R7);
-		tA_VB.setText(cpu.CPU.VBuff);
+		tA_IR.setText(cpu.IR);
+		tA_PC.setText(cpu.PC);
+		tA_Acc.setText(cpu.acc.acc_value);
+		tA_SR.setText(cpu.SR.getSR());
+		tA_R0.setText(cpu.R0);
+		tA_R1.setText(cpu.R1);
+		tA_R2.setText(cpu.R2);
+		tA_R3.setText(cpu.R3);
+		tA_R4.setText(cpu.R4);
+		tA_R5.setText(cpu.R5);
+		tA_R6.setText(cpu.R6);
+		tA_R7.setText(cpu.R7);
+		tA_VB.setText(cpu.VBuff);
 		mem_update();
 
 	}
 
 	public void mem_update(){
-		String[] arr = cpu.CPU.mem.mem_array;
+		String[] arr = cpu.mem.mem_array;
 		tA_memory.setText("");
-		for (int i=0; 1 < arr.length; i = i+2){
-			System.out.println(Integer.toHexString(i) + ": " + arr[i+1]+arr[i] +"\n");
-			tA_memory.append(Integer.toHexString(i) + ": " + arr[i+1]+arr[i] +"\n");
+		for (int i=0; i < arr.length; i = i+2){
+			tA_memory.append(String.format("%02X", i) + ": " + arr[i+1]+arr[i] +"\n");
 		}
 
 
