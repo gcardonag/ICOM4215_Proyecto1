@@ -1,10 +1,12 @@
 package gui;
 
 import java.awt.EventQueue;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -28,6 +30,7 @@ public class MainApp implements ActionListener, KeyListener {
 
 	private JFrame mainFrame;
 	private JPanel panel;
+	private JScrollPane scrollPane;
 	private JTextArea tA_R3;
 	private JTextArea tA_R2;
 	private JTextArea tA_R6;
@@ -259,7 +262,7 @@ public class MainApp implements ActionListener, KeyListener {
 		tA_Display.setBounds(166, 290, 86, 20);
 		panel.add(tA_Display);
 
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setBounds(299, 113, 118, 317);
@@ -324,17 +327,17 @@ public class MainApp implements ActionListener, KeyListener {
 		tA_Keyboard.setText(keyboard.toUpperCase());
 		tA_Display.setText(""+(char) Integer.parseInt(keyboard,16));
 		mem_update();
-
 	}
 
 	public void mem_update(){
 		String[] arr = cpu.mem.mem_array;
 		tA_memory.setText("");
 		for (int i=0; i < arr.length; i = i+2){
-			tA_memory.append(String.format("%02X", i) + ": " + arr[i+1]+arr[i] +"\n");
+			tA_memory.append("  " + String.format("%02X", i) + ": " + arr[i+1]+arr[i]);
+			if( i < arr.length-2){
+				tA_memory.append("\n");
+			}
 		}
-
-
 	}
 
 	@Override

@@ -99,9 +99,11 @@ public class CPU {
 		String hex_value = mem.getFromMemory(PC_hex) + mem.getFromMemory(PC1);
 		PC = PC_next;
 		String bin_value = String.format("%16s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
+		IR = bin_value;
+		//System.out.println(bin_value);
 		int opcode = Integer.parseInt(bin_value.substring(0, 5), 2);
-		System.out.println(bin_value.substring(0,5));
-		System.out.println(opcode);
+		//System.out.println(bin_value.substring(0,5));
+		//System.out.println(opcode);
 		switch(opcode){
 			case(0):
 				acc.acc_and(getRegisterValue(bin_value.substring(5,8)));
