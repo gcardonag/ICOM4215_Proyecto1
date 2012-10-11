@@ -20,6 +20,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JPanel;
 
 import cpu.CPU;
+import java.awt.Font;
 
 public class MainApp implements ActionListener, KeyListener {
 
@@ -315,6 +316,9 @@ public class MainApp implements ActionListener, KeyListener {
 		tA_R6.setText(cpu.R6);
 		tA_R7.setText(cpu.R7);
 		tA_VB.setText(cpu.VBuff);
+		String keyboard = cpu.mem.getFromMemory("FA") + cpu.mem.getFromMemory("FB");
+		tA_Keyboard.setText(keyboard.toUpperCase());
+		tA_Display.setText(""+(char) Integer.parseInt(keyboard,16));
 		mem_update();
 
 	}

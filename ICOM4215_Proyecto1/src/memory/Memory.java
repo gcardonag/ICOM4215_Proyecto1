@@ -13,6 +13,8 @@ public class Memory {
 		for(int i=0; i<MEM_SIZE; i++){
 			mem_array[i] = String.format("%02X", rand.nextInt(255));
 		}
+		addToMemory("FA" , "00");
+		addToMemory("FB" , "00");
 	}
 	
 	/*public void addToMemory(String hex_value) throws NoFreeMemoryException
