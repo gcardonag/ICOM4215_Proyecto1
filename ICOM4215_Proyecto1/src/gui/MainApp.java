@@ -19,6 +19,8 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JPanel;
 
+import cpu.CPU;
+
 public class MainApp implements ActionListener, KeyListener {
 
 	static private File file = new File("src/prog.txt");
@@ -48,6 +50,12 @@ public class MainApp implements ActionListener, KeyListener {
 	public static void main(String[] args) {		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+
+				try {
+					scanner = new Scanner(file);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
 				try {
 					MainApp window = new MainApp();
 					window.mainFrame.setVisible(true);
@@ -57,11 +65,7 @@ public class MainApp implements ActionListener, KeyListener {
 			}
 		});
 
-		try {
-			scanner = new Scanner(file);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}	
+
 
 
 	}
@@ -77,6 +81,9 @@ public class MainApp implements ActionListener, KeyListener {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
+		CPU cpu = new CPU(scanner);
+
 		mainFrame = new JFrame();
 		mainFrame.setTitle("HGH SRC Simulator");
 		mainFrame.setBounds(100, 100, 435, 480);
@@ -276,6 +283,8 @@ public class MainApp implements ActionListener, KeyListener {
 		b_STEP.addActionListener(this);
 		b_RUN.addActionListener(this);
 
+		update();
+
 	}
 
 	@Override
@@ -297,6 +306,30 @@ public class MainApp implements ActionListener, KeyListener {
 	}
 
 	public void update(){
+		tA_IR.setText(cpu.CPU.IR);
+		tA_PC.setText(cpu.CPU.PC);
+		tA_Acc.setText(cpu.CPU.acc.acc_value);
+		tA_SR.setText(cpu.CPU.SR.getSR());
+		tA_R0.setText(cpu.CPU.R0);
+		tA_R1.setText(cpu.CPU.R1);
+		tA_R2.setText(cpu.CPU.R2);
+		tA_R3.setText(cpu.CPU.R3);
+		tA_R4.setText(cpu.CPU.R4);
+		tA_R5.setText(cpu.CPU.R5);
+		tA_R6.setText(cpu.CPU.R6);
+		tA_R7.setText(cpu.CPU.R7);
+		tA_VB.setText(cpu.CPU.VBuff);
+		mem_update();
+
+	}
+
+	public void mem_update(){
+		String[] arr = cpu.CPU.mem.mem_array;
+		tA_memory.setText("");
+		for (int i=0; 1 < arr.length; i= i+2){
+			tA_memory.append(Integer.toHexString(i) + ": " + arr[i+1]+arr[i] +"\n");
+		}
+
 
 	}
 
