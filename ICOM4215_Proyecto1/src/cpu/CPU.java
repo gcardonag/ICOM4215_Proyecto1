@@ -1,5 +1,6 @@
 package cpu;
 
+import java.util.Scanner;
 import java.util.Stack;
 
 import memory.Memory;
@@ -19,7 +20,7 @@ public class CPU {
 	public static Stack<String> VStack0 = new Stack<String>();
 	public static Stack<String> VStack1 = new Stack <String>();
 	
-	public CPU()
+	public CPU(Scanner scan)
 	{
 		R0 = "00000000";
 		R1 = "00000000";
@@ -35,6 +36,21 @@ public class CPU {
 		VStack0.push("00000000");
 		VStack1.push("00000000");
 		VStack1.push("00000000");
+		int addr_counter = 0;
+		while(scan.hasNext())
+		{
+			String hex_addr = Integer.toHexString(addr_counter);
+			String hex_addr_1 = Integer.toHexString(addr_counter+1);
+			while(hex_addr.length() < 2)
+			{
+				hex_addr = "0" + hex_addr;
+				hex_addr = "1" + hex_addr;
+			}
+			String hex_values = scan.next();
+			mem.addToMemory(hex_addr, hex_values.substring(0,2));
+			mem.addToMemory(hex_addr_1, hex_values.substring(2,4));
+			addr_counter = addr_counter + 2;
+		}
 	}
 	
 	private String getRegisterValue(String register_num_bin)
@@ -138,6 +154,8 @@ public class CPU {
 	
 	public void store_input_key(int ascii_value){
 		String hex_value = Integer.toHexString(ascii_value);
+		while(hex_value.length() < 4)
+			hex_value = "0"+hex_value;
 		mem.addToMemory("FA", hex_value.substring(0,2));
 		mem.addToMemory("FB", hex_value.substring(2,4));
 	}
