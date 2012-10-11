@@ -42,8 +42,8 @@ public class Accumulator {
 		String result = "";
 		for(int i=0; i<8; i++)
 		{
-			String acc_bit = acc_value.substring(i,i+1);
-			String reg_bit = reg_value.substring(i,i+1);
+			String acc_bit = Character.toString(acc_value.charAt(i));
+			String reg_bit = Character.toString(reg_value.charAt(i));
 			if(acc_bit.equals("0") && reg_bit.equals("0"))
 			{
 				result = result + "0";
@@ -165,7 +165,7 @@ public class Accumulator {
 	public void acc_neg () {
 		String temp = "";
 		boolean oneFound = false;
-		for (int i = acc_value.length(); i >= 0; i++) {
+		for (int i = acc_value.length()-1; i >= 0; i--) {
 			if (!oneFound) {
 				if (acc_value.charAt(i) == '0') {
 					temp = "0" + temp;
@@ -269,7 +269,7 @@ public class Accumulator {
 	 * @param mem_addr
 	 */
 	public void acc_lda_addr (String mem_addr) {
-		acc_value = CPU.mem.getFromMemory(mem_addr);
+		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(CPU.mem.getFromMemory(mem_addr),16)));
 		set_CPU_flags();
 	}
 	
@@ -324,7 +324,7 @@ public class Accumulator {
 	 */
 	public void acc_ldi(String hex_value)
 	{
-		acc_value = Integer.toBinaryString(Integer.parseInt(hex_value, 16));
+		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
 	}
 	
 	/**

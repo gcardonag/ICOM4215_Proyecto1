@@ -19,6 +19,7 @@ public class CPU {
 	public static String VBuff = "00000000";
 	public static Stack<String> VStack0 = new Stack<String>();
 	public static Stack<String> VStack1 = new Stack <String>();
+	public static boolean running = true;
 	
 	public CPU(Scanner scan)
 	{
@@ -79,17 +80,27 @@ public class CPU {
 		}
 	}
 	
+	public void run()
+	{
+		while(running)
+			step();
+	}
+	
 	public void step()
 	{
+		if(!running)
+			return;
 		String PC_hex = Integer.toHexString(Integer.parseInt(PC, 2));
 		String PC1 = Integer.toHexString(Integer.parseInt(PC, 2)+1);
 		String PC_next = String.format("%8s", Integer.toBinaryString(Integer.parseInt(PC, 2)+2)).replace(" ", "0");
-		System.out.println(PC);
-		System.out.println(PC1);
+		//System.out.println(PC);
+		//System.out.println(PC1);
 		String hex_value = mem.getFromMemory(PC_hex) + mem.getFromMemory(PC1);
 		PC = PC_next;
-		String bin_value = Integer.toBinaryString(Integer.parseInt(hex_value, 16));
+		String bin_value = String.format("%16s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
 		int opcode = Integer.parseInt(bin_value.substring(0, 5), 2);
+		System.out.println(bin_value.substring(0,5));
+		System.out.println(opcode);
 		switch(opcode){
 			case(0):
 				acc.acc_and(getRegisterValue(bin_value.substring(5,8)));
@@ -135,23 +146,23 @@ public class CPU {
 			case(14):
 				acc.acc_ldi(hex_value.substring(2,4));
 				break;
-			case(15):
+			case(16):
 				brz();
 				break;
-			case(16):
+			case(17):
 				brc();
 				break;
-			case(17):
+			case(18):
 				brn();
 				break;
-			case(18):
+			case(19):
 				bro();
 				break;
-			case(19):
+			case(31):
 				stop();
 				break;
-			case(20):
-				
+			case(24):
+				break;
 		}
 	}
 	
@@ -193,6 +204,6 @@ public class CPU {
 	
 	private void stop()
 	{
-		PC = null;
+		running = false;
 	}
 }
