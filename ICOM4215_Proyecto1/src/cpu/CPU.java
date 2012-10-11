@@ -44,7 +44,7 @@ public class CPU {
 			while(hex_addr.length() < 2)
 			{
 				hex_addr = "0" + hex_addr;
-				hex_addr = "1" + hex_addr;
+				hex_addr_1 = "0" + hex_addr_1;
 			}
 			String hex_values = scan.next();
 			mem.addToMemory(hex_addr, hex_values.substring(0,2));
