@@ -15,7 +15,8 @@ public class Accumulator {
 	 * 
 	 * @param reg_value
 	 */
-	public void acc_and(String reg_value){
+	public void acc_and(String register_num_bin){
+		String reg_value = getRegisterValue(register_num_bin);
 		String result = "";
 		for(int i=0; i<8; i++)
 		{
@@ -38,7 +39,8 @@ public class Accumulator {
 	 * 
 	 * @param reg_value
 	 */
-	public void acc_or(String reg_value){
+	public void acc_or(String register_num_bin){
+		String reg_value = getRegisterValue(register_num_bin);
 		String result = "";
 		for(int i=0; i<8; i++)
 		{
@@ -61,7 +63,8 @@ public class Accumulator {
 	 * 
 	 * @param reg_value
 	 */
-	public void acc_xor(String reg_value){
+	public void acc_xor(String register_num_bin){
+		String reg_value = getRegisterValue(register_num_bin);
 		String result = "";
 		for(int i=0; i<8; i++)
 		{
@@ -78,7 +81,8 @@ public class Accumulator {
 		set_CPU_flags();
 	}
 	
-	public void acc_addc(String reg_value){
+	public void acc_addc(String register_num_bin){
+		String reg_value = getRegisterValue(register_num_bin);
 		String result = "";
 		for(int i=8; i>0; i--)
 		{
@@ -336,6 +340,33 @@ public class Accumulator {
 	public void acc_ldi(String hex_value)
 	{
 		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
+	}
+	
+	private String getRegisterValue(String register_num_bin)
+	{
+		int register_num = Integer.parseInt(register_num_bin, 2);
+		System.out.println(register_num);
+		switch(register_num)
+		{
+			case(0):
+				return CPU.R0;
+			case(1):
+				return CPU.R1;
+			case(2):
+				return CPU.R2;
+			case(3):
+				return CPU.R3;
+			case(4):
+				return CPU.R4;
+			case(5):
+				return CPU.R5;
+			case(6):
+				return CPU.R6;
+			case(7):
+				return CPU.R7;
+			default:
+				return "ERROR";
+		}
 	}
 	
 	/**

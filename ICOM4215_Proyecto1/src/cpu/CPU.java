@@ -1,7 +1,6 @@
 package cpu;
 
 import java.util.Scanner;
-import java.util.Stack;
 
 import memory.Memory;
 import accumulator.Accumulator;
@@ -17,8 +16,12 @@ public class CPU {
 	public static Memory mem;
 	public static String IR = "0000000000000000";
 	public static String VBuff = "00000000";
-	public static Stack<String> VStack0 = new Stack<String>();
-	public static Stack<String> VStack1 = new Stack <String>();
+	//public static Stack<String> VStack0 = new Stack<String>();
+	//public static Stack<String> VStack1 = new Stack <String>();
+	public static String v0Stack = "0000000000000000";
+	public static String v1Stack = "0000000000000000";
+	public static int v0StackSize = 0;
+	public static int v1StackSize = 0;
 	public static boolean running = true;
 	
 	public CPU(Scanner scan)
@@ -33,10 +36,6 @@ public class CPU {
 		R7 = "00000000";
 		acc = new Accumulator();
 		mem = new Memory();
-		VStack0.push("00000000");
-		VStack0.push("00000000");
-		VStack1.push("00000000");
-		VStack1.push("00000000");
 		int addr_counter = 0;
 		while(scan.hasNext())
 		{
@@ -54,33 +53,6 @@ public class CPU {
 		}
 	}
 	
-	private String getRegisterValue(String register_num_bin)
-	{
-		int register_num = Integer.parseInt(register_num_bin, 2);
-		System.out.println(register_num);
-		switch(register_num)
-		{
-			case(0):
-				return CPU.R0;
-			case(1):
-				return CPU.R1;
-			case(2):
-				return CPU.R2;
-			case(3):
-				return CPU.R3;
-			case(4):
-				return CPU.R4;
-			case(5):
-				return CPU.R5;
-			case(6):
-				return CPU.R6;
-			case(7):
-				return CPU.R7;
-			default:
-				return "ERROR";
-		}
-	}
-	
 	public void run()
 	{
 		while(running)
@@ -94,34 +66,30 @@ public class CPU {
 		String PC_hex = Integer.toHexString(Integer.parseInt(PC, 2));
 		String PC1 = Integer.toHexString(Integer.parseInt(PC, 2)+1);
 		String PC_next = String.format("%8s", Integer.toBinaryString(Integer.parseInt(PC, 2)+2)).replace(" ", "0");
-		//System.out.println(PC);
-		//System.out.println(PC1);
 		String hex_value = mem.getFromMemory(PC_hex) + mem.getFromMemory(PC1);
 		PC = PC_next;
 		String bin_value = String.format("%16s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
 		IR = bin_value;
-		//System.out.println(bin_value);
 		int opcode = Integer.parseInt(bin_value.substring(0, 5), 2);
-		//System.out.println(bin_value.substring(0,5));
-		//System.out.println(opcode);
 		switch(opcode){
 			case(0):
-				acc.acc_and(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_and(bin_value.substring(5,8));
 				break;
 			case(1):
-				acc.acc_or(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_or(bin_value.substring(5,8));
 				break;
 			case(2):
-				acc.acc_xor(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_xor(bin_value.substring(5,8));
 				break;
 			case(3):
-				acc.acc_addc(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_addc(bin_value.substring(5,8));
 				break;
 			case(4):
-				acc.acc_sub(getRegisterValue(bin_value.substring(5,8)));
+				acc.acc_sub(bin_value.substring(5,8));
 				break;
 			case(5):
-				//VECTOR ADD
+				vadd(bin_value.substring(5,8));
+				break;
 			case(6):
 				acc.acc_neg();
 				break;
@@ -166,9 +134,27 @@ public class CPU {
 				break;
 			case(24):
 				break;
+			case(15):
+				v0push(bin_value.substring(8));
+				break;
+			case(20):
+				v1push(bin_value.substring(8));
+				break;
+			case(21):
+				v0pop(bin_value.substring(5,8));
+				break;
+			case(22):
+				v1pop(bin_value.substring(5,8));
+				break;
+			
 		}
 	}
 	
+	/**
+	 * Stores an ascii value input by a user in its designated location in memory.
+	 * 
+	 * @param ascii_value
+	 */
 	public void store_input_key(int ascii_value){
 		String hex_value = Integer.toHexString(ascii_value).toUpperCase();
 		while(hex_value.length() < 4)
@@ -177,7 +163,130 @@ public class CPU {
 		mem.addToMemory("FB", hex_value.substring(2,4));
 	}
 	
-	private void vpush(){
+	/**
+	 * Adds the top of stack and second of stack for both v0 and v1 vector stacks. The v1 vector stack is stored in the vector buffer.
+	 * The v0 vector stack is stored in the accumulator. The register_num_bin parameter indicates the register where values will be 
+	 * stored as they are passed onto the accumulator.
+	 * 
+	 * @param register_num_bin
+	 */
+	private void vadd(String register_num_bin)
+	{
+		v1pop(register_num_bin);
+		acc.acc_lda_rf(register_num_bin);
+		v1pop(register_num_bin);
+		acc.acc_addc(register_num_bin);
+		CPU.VBuff = acc.acc_value;
+		v0pop(register_num_bin);
+		acc.acc_lda_rf(register_num_bin);
+		v0pop(register_num_bin);
+		acc.acc_addc(register_num_bin);
+	}
+	
+	/**
+	 * Pushes the binary value to the top of the v0 vector stack.
+	 * 
+	 * @param bin_value
+	 */
+	private void v0push(String bin_value){
+		if(v0StackSize == 2)
+			return;
+		v0Stack = v0Stack.substring(8);
+		v0Stack = bin_value + v0Stack;
+		v0StackSize++;
+	}
+	
+	/**
+	 * Pops the top of the v0 vector stack, storing the resulting value in the specified register.
+	 * 
+	 * @param register_num_bin
+	 */
+	private void v0pop(String register_num_bin){
+		//if(v0StackSize == 0)
+			//return;
+		String temp = v0Stack.substring(0, 8);
+		v0Stack = v0Stack.substring(8) + "00000000";
+		int register_num = Integer.parseInt(register_num_bin, 2);
+		switch(register_num)
+		{
+			case(0):
+				CPU.R0 = temp;
+				break;
+			case(1):
+				CPU.R1 = temp;
+				break;
+			case(2):
+				CPU.R2 = temp;
+				break;
+			case(3):
+				CPU.R3 = temp;
+				break;
+			case(4):
+				CPU.R4 = temp;
+				break;
+			case(5):
+				CPU.R5 = temp;
+				break;
+			case(6):
+				CPU.R6 = temp;
+				break;
+			case(7):
+				CPU.R7 = temp;
+				break;
+		}
+	}
+	
+	/**
+	 * Pushes the binary value to the top of the v1 vector stack.
+	 * 
+	 * @param bin_value
+	 */
+	private void v1push(String bin_value){
+		if(v1StackSize == 2)
+			return;
+		v1Stack = v1Stack.substring(8);
+		v1Stack = bin_value + v1Stack;
+		v1StackSize++;
+	}
+	
+	/**
+	 * Pops the top of the v1 vector stack, storing the resulting value in the specified register.
+	 * 
+	 * @param register_num_bin
+	 */
+	private void v1pop(String register_num_bin){
+		//if(v1StackSize == 0)
+			//return;
+		String temp = v0Stack.substring(0, 8);
+		v0Stack = v0Stack.substring(8) + "00000000";
+		int register_num = Integer.parseInt(register_num_bin, 2);
+		switch(register_num)
+		{
+			case(0):
+				CPU.R0 = temp;
+				break;
+			case(1):
+				CPU.R1 = temp;
+				break;
+			case(2):
+				CPU.R2 = temp;
+				break;
+			case(3):
+				CPU.R3 = temp;
+				break;
+			case(4):
+				CPU.R4 = temp;
+				break;
+			case(5):
+				CPU.R5 = temp;
+				break;
+			case(6):
+				CPU.R6 = temp;
+				break;
+			case(7):
+				CPU.R7 = temp;
+				break;
+		}
 		
 	}
 	
