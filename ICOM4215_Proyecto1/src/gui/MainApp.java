@@ -25,7 +25,7 @@ import cpu.CPU;
 
 public class MainApp implements ActionListener, KeyListener {
 
-	static private File file = new File("src/prog.txt");
+	static private File file = new File("src/testfile_1_B.txt");
 	static private Scanner scanner;
 
 	private JFrame mainFrame;

@@ -16,8 +16,6 @@ public class CPU {
 	public static Memory mem;
 	public static String IR = "0000000000000000";
 	public static String VBuff = "00000000";
-	//public static Stack<String> VStack0 = new Stack<String>();
-	//public static Stack<String> VStack1 = new Stack <String>();
 	public static String v0Stack = "0000000000000000";
 	public static String v1Stack = "0000000000000000";
 	public static int v0StackSize = 0;
@@ -88,7 +86,7 @@ public class CPU {
 				acc.acc_sub(bin_value.substring(5,8));
 				break;
 			case(5):
-				vadd(bin_value.substring(5,8));
+				vadd();
 				break;
 			case(6):
 				acc.acc_neg();
@@ -134,16 +132,16 @@ public class CPU {
 				break;
 			case(24):
 				break;
-			case(15):
-				v0push(bin_value.substring(8));
-				break;
 			case(20):
-				v1push(bin_value.substring(8));
+				v0push();
 				break;
 			case(21):
-				v0pop(bin_value.substring(5,8));
+				v1push();
 				break;
 			case(22):
+				v0pop(bin_value.substring(5,8));
+				break;
+			case(23):
 				v1pop(bin_value.substring(5,8));
 				break;
 			
@@ -159,28 +157,30 @@ public class CPU {
 		String hex_value = Integer.toHexString(ascii_value).toUpperCase();
 		while(hex_value.length() < 4)
 			hex_value = "0"+hex_value;
-		mem.addToMemory("FA", hex_value.substring(0,2));
-		mem.addToMemory("FB", hex_value.substring(2,4));
+		mem.addToMemory("FB", hex_value.substring(0,2));
+		mem.addToMemory("FA", hex_value.substring(2,4));
 	}
 	
 	/**
 	 * Adds the top of stack and second of stack for both v0 and v1 vector stacks. The v1 vector stack is stored in the vector buffer.
-	 * The v0 vector stack is stored in the accumulator. The register_num_bin parameter indicates the register where values will be 
-	 * stored as they are passed onto the accumulator.
+	 * The v0 vector stack is stored in the accumulator. These values will be stored in register 0 temporarily to use existing accumulator 
+	 * instructions, while the value for the register will be stored in temporary memory.
 	 * 
 	 * @param register_num_bin
 	 */
-	private void vadd(String register_num_bin)
+	private void vadd()
 	{
-		v1pop(register_num_bin);
-		acc.acc_lda_rf(register_num_bin);
-		v1pop(register_num_bin);
-		acc.acc_addc(register_num_bin);
+		String temp = CPU.R0;
+		v1pop("000");
+		acc.acc_lda_rf("000");
+		v1pop("000");
+		acc.acc_addc("000");
 		CPU.VBuff = acc.acc_value;
-		v0pop(register_num_bin);
-		acc.acc_lda_rf(register_num_bin);
-		v0pop(register_num_bin);
-		acc.acc_addc(register_num_bin);
+		v0pop("000");
+		acc.acc_lda_rf("000");
+		v0pop("000");
+		acc.acc_addc("000");
+		CPU.R0 = temp;
 	}
 	
 	/**
@@ -188,11 +188,11 @@ public class CPU {
 	 * 
 	 * @param bin_value
 	 */
-	private void v0push(String bin_value){
+	private void v0push(){
 		if(v0StackSize == 2)
 			return;
 		v0Stack = v0Stack.substring(8);
-		v0Stack = bin_value + v0Stack;
+		v0Stack = acc.acc_value + v0Stack;
 		v0StackSize++;
 	}
 	
@@ -241,11 +241,11 @@ public class CPU {
 	 * 
 	 * @param bin_value
 	 */
-	private void v1push(String bin_value){
+	private void v1push(){
 		if(v1StackSize == 2)
 			return;
 		v1Stack = v1Stack.substring(8);
-		v1Stack = bin_value + v1Stack;
+		v1Stack = acc.acc_value + v1Stack;
 		v1StackSize++;
 	}
 	
@@ -290,30 +290,49 @@ public class CPU {
 		
 	}
 	
+	/**
+	 * Verifies if the status register's zero flag is set.
+	 * If it is, the program counter is set to the value stored in register 7.
+	 */
 	private void brz()
 	{
 		if(SR.zero.equals("1"))
 			PC = R7;
 	}
 	
+	/**
+	 * Verifies if the status register's carry flag is set.
+	 * If it is, the program counter is set to the value stored in register 7.
+	 */
 	private void brc()
 	{
 		if(SR.carry.equals("1"))
 			PC = R7;
 	}
 	
+	/**
+	 * Verifies if the status register's negative flag is set.
+	 * If it is, the program counter is set to the value stored in register 7.
+	 */
 	private void brn()
 	{
 		if(SR.negative.equals("1"))
 			PC = R7;
 	}
 	
+	/**
+	 * Verifies if the status register's overflow flag is set.
+	 * If it is, the program counter is set to the value stored in register 7.
+	 */
 	private void bro()
 	{
 		if(SR.overflow.equals("1"))
 			PC = R7;
 	}
 	
+	/**
+	 * Sets the CPU's running flag to false, preventing any further running or stepping by it.
+	 */
 	private void stop()
 	{
 		running = false;

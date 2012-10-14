@@ -284,7 +284,7 @@ public class Accumulator {
 	 * @param mem_addr
 	 */
 	public void acc_lda_addr (String mem_addr) {
-		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(CPU.mem.getFromMemory(mem_addr),16)));
+		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(CPU.mem.getFromMemory(mem_addr),16))).replace(" ", "0");
 		set_CPU_flags();
 	}
 	
@@ -340,12 +340,12 @@ public class Accumulator {
 	public void acc_ldi(String hex_value)
 	{
 		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
+		set_CPU_flags();
 	}
 	
 	private String getRegisterValue(String register_num_bin)
 	{
 		int register_num = Integer.parseInt(register_num_bin, 2);
-		System.out.println(register_num);
 		switch(register_num)
 		{
 			case(0):
@@ -374,7 +374,7 @@ public class Accumulator {
 	 */
 	private void set_CPU_flags()
 	{	
-		if(Integer.parseInt(acc_value,2) == 0)
+		if(acc_value.equals("00000000"))
 			CPU.SR.zero = "1";
 		else
 			CPU.SR.zero = "0";
