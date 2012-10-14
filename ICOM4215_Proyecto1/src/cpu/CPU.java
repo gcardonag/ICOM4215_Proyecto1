@@ -157,8 +157,8 @@ public class CPU {
 		String hex_value = Integer.toHexString(ascii_value).toUpperCase();
 		while(hex_value.length() < 4)
 			hex_value = "0"+hex_value;
-		mem.addToMemory("FB", hex_value.substring(0,2));
-		mem.addToMemory("FA", hex_value.substring(2,4));
+		mem.addToMemory("FA", hex_value.substring(0,2));
+		mem.addToMemory("FB", hex_value.substring(2,4));
 	}
 	
 	/**
