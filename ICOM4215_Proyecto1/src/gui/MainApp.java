@@ -6,7 +6,6 @@ import java.awt.Point;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,6 +19,7 @@ import java.util.Scanner;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JPanel;
+import javax.swing.text.DefaultCaret;
 
 import cpu.CPU;
 
@@ -270,7 +270,12 @@ public class MainApp implements ActionListener, KeyListener {
 
 		tA_memory = new JTextArea();
 		tA_memory.setEditable(false);
+		tA_memory.setSize(100, 2048);
 		scrollPane.setViewportView(tA_memory);
+		
+		DefaultCaret caret = (DefaultCaret) tA_memory.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
 
 		JButton b_STEP = new JButton("STEP");
 		b_STEP.setToolTipText("Run one step of the program.");
