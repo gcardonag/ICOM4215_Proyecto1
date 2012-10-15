@@ -11,19 +11,36 @@ public class CPU {
 	
 	// Registers
 	public static String R0, R1, R2, R3, R4, R5, R6, R7;
+	
+	//Program Counter
 	public static String PC = "00000000";
+	
+	//Accumulator
 	public static Accumulator acc;
+	
+	//Memory
 	public static Memory mem;
+	
+	//Instruction Register
 	public static String IR = "0000000000000000";
+	
+	//Vector Buffer
 	public static String VBuff = "00000000";
+	
+	//Stacks
 	public static String v0Stack = "0000000000000000";
 	public static String v1Stack = "0000000000000000";
+	
+	//Stack size (Used for push instruction)
 	public static int v0StackSize = 0;
 	public static int v1StackSize = 0;
+	
+	//CPU Run Status (Used to check if CPU should continue to step/run)
 	public static boolean running = true;
 	
 	public CPU(Scanner scan)
 	{
+		//Initialize all Registers to 0.
 		R0 = "00000000";
 		R1 = "00000000";
 		R2 = "00000000";
@@ -32,8 +49,12 @@ public class CPU {
 		R5 = "00000000";
 		R6 = "00000000";
 		R7 = "00000000";
+		
+		//Initializing Accumulator and Memory
 		acc = new Accumulator();
 		mem = new Memory();
+		
+		//Using scanner passed from GUI to add instructions to memory.
 		int addr_counter = 0;
 		while(scan.hasNext())
 		{
@@ -61,8 +82,8 @@ public class CPU {
 	{
 		if(!running)
 			return;
-		String PC_hex = Integer.toHexString(Integer.parseInt(PC, 2));
-		String PC1 = Integer.toHexString(Integer.parseInt(PC, 2)+1);
+		String PC_hex = String.format("%02X", Integer.parseInt(PC, 2));
+		String PC1 = String.format("%02X", Integer.parseInt(PC, 2)+1);
 		String PC_next = String.format("%8s", Integer.toBinaryString(Integer.parseInt(PC, 2)+2)).replace(" ", "0");
 		String hex_value = mem.getFromMemory(PC_hex) + mem.getFromMemory(PC1);
 		PC = PC_next;
@@ -191,7 +212,7 @@ public class CPU {
 	private void v0push(){
 		if(v0StackSize == 2)
 			return;
-		v0Stack = v0Stack.substring(8);
+		v0Stack = v0Stack.substring(0, 8);
 		v0Stack = acc.acc_value + v0Stack;
 		v0StackSize++;
 	}
@@ -202,9 +223,7 @@ public class CPU {
 	 * @param register_num_bin
 	 */
 	private void v0pop(String register_num_bin){
-		//if(v0StackSize == 0)
-			//return;
-		String temp = v0Stack.substring(0, 8);
+		String temp = v0Stack.substring(0,8);
 		v0Stack = v0Stack.substring(8) + "00000000";
 		int register_num = Integer.parseInt(register_num_bin, 2);
 		switch(register_num)
@@ -244,7 +263,7 @@ public class CPU {
 	private void v1push(){
 		if(v1StackSize == 2)
 			return;
-		v1Stack = v1Stack.substring(8);
+		v1Stack = v1Stack.substring(0,8);
 		v1Stack = acc.acc_value + v1Stack;
 		v1StackSize++;
 	}
@@ -255,10 +274,8 @@ public class CPU {
 	 * @param register_num_bin
 	 */
 	private void v1pop(String register_num_bin){
-		//if(v1StackSize == 0)
-			//return;
-		String temp = v0Stack.substring(0, 8);
-		v0Stack = v0Stack.substring(8) + "00000000";
+		String temp = v1Stack.substring(0, 8);
+		v1Stack = v1Stack.substring(8) + "00000000";
 		int register_num = Integer.parseInt(register_num_bin, 2);
 		switch(register_num)
 		{
@@ -297,7 +314,7 @@ public class CPU {
 	private void brz()
 	{
 		if(SR.zero.equals("1"))
-			PC = R7;
+			CPU.PC = CPU.R7;
 	}
 	
 	/**
@@ -307,7 +324,7 @@ public class CPU {
 	private void brc()
 	{
 		if(SR.carry.equals("1"))
-			PC = R7;
+			CPU.PC = CPU.R7;
 	}
 	
 	/**
@@ -317,7 +334,7 @@ public class CPU {
 	private void brn()
 	{
 		if(SR.negative.equals("1"))
-			PC = R7;
+			CPU.PC = CPU.R7;
 	}
 	
 	/**
@@ -327,7 +344,7 @@ public class CPU {
 	private void bro()
 	{
 		if(SR.overflow.equals("1"))
-			PC = R7;
+			CPU.PC = CPU.R7;
 	}
 	
 	/**

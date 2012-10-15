@@ -14,6 +14,11 @@ public class StatusRegister {
 		zero = "0";
 	}
 	
+	/**
+	 * Returns a string consisting of the status register's four flags.
+	 * 
+	 * @return A string consisting of the overflow, negative, carry, and zero bits, in that order.
+	 */
 	public String getSR()
 	{
 		return overflow + negative + carry + zero;

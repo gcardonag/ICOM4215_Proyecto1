@@ -30,6 +30,8 @@ public class Accumulator {
 				result = result + "0";
 		}
 		acc_value = result;
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -54,6 +56,8 @@ public class Accumulator {
 				result = result + "1";
 		}
 		acc_value = result;
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -78,6 +82,8 @@ public class Accumulator {
 				result = result + "0";
 		}
 		acc_value = result;
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -96,9 +102,6 @@ public class Accumulator {
 				bits_1++;
 			if(CPU.SR.carry.equals("1"))
 				bits_1++;
-			//System.out.println(acc_value+"L");
-			//System.out.println(reg_value+"L");
-			//System.out.println(bits_1 + "L");
 			
 			//If 3 bits set to 1
 			if(bits_1 == 3)
@@ -200,6 +203,8 @@ public class Accumulator {
 			}
 		}
 		acc_value = temp;
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -217,6 +222,8 @@ public class Accumulator {
 			}
 		}
 		acc_value = temp;
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -228,6 +235,7 @@ public class Accumulator {
 		char msb = acc_value.charAt(0);
 		acc_value = acc_value.substring(1) + CPU.SR.carry;
 		CPU.SR.carry = Character.toString(msb);
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -240,6 +248,7 @@ public class Accumulator {
 		acc_value = acc_value.substring(0, 6);
 		acc_value = CPU.SR.carry + acc_value;
 		CPU.SR.carry = Character.toString(lsb);
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -248,34 +257,9 @@ public class Accumulator {
 	 * @param reg_value
 	 */
 	public void acc_lda_rf (String reg_num_bin) {
-		int register_num = Integer.parseInt(reg_num_bin, 2);
-		switch(register_num)
-		{
-			case(0):
-				acc_value = CPU.R0;
-				break;
-			case(1):
-				acc_value = CPU.R1;
-				break;
-			case(2):
-				acc_value = CPU.R2;
-				break;
-			case(3):
-				acc_value = CPU.R3;
-				break;
-			case(4):
-				acc_value = CPU.R4;
-				break;
-			case(5):
-				acc_value = CPU.R5;
-				break;
-			case(6):
-				acc_value = CPU.R6;
-				break;
-			case(7):
-				acc_value = CPU.R7;
-				break;
-		}
+		acc_value = getRegisterValue(reg_num_bin);
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -285,6 +269,8 @@ public class Accumulator {
 	 */
 	public void acc_lda_addr (String mem_addr) {
 		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(CPU.mem.getFromMemory(mem_addr),16))).replace(" ", "0");
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -321,6 +307,8 @@ public class Accumulator {
 				CPU.R7 = acc_value;
 				break;
 		}
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -330,7 +318,9 @@ public class Accumulator {
 	 */
 	public void acc_sta_addr(String mem_addr)
 	{
-		CPU.mem.addToMemory(mem_addr, Integer.toHexString(Integer.parseInt(acc_value, 2)));
+		CPU.mem.addToMemory(mem_addr, String.format("%02X", Integer.parseInt(acc_value, 2)));
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 	}
 	
 	/**
@@ -340,6 +330,8 @@ public class Accumulator {
 	public void acc_ldi(String hex_value)
 	{
 		acc_value = String.format("%8s", Integer.toBinaryString(Integer.parseInt(hex_value, 16))).replace(" ", "0");
+		CPU.SR.carry = "0";
+		CPU.SR.overflow = "0";
 		set_CPU_flags();
 	}
 	
@@ -382,6 +374,6 @@ public class Accumulator {
 		if(acc_value.startsWith("1"))
 			CPU.SR.negative = "1";
 		else
-			CPU.SR.negative = "0";	
+			CPU.SR.negative = "0";
 	}
 }
