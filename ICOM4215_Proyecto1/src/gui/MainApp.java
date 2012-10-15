@@ -69,10 +69,6 @@ public class MainApp implements ActionListener, KeyListener {
 				}
 			}
 		});
-
-
-
-
 	}
 
 	/**
